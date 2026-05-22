@@ -1,0 +1,28 @@
+#pragma once
+
+#include <stddef.h>
+#include <stdint.h>
+
+#include "rk3576_ddr/abi.h"
+#include "rk3576_ddr/timing.h"
+
+extern const uint8_t rk3576_ddr_tag_record_words[RK3576_TAG_LAST_WRITABLE - RK3576_TAG_FIRST_WRITABLE + 1u];
+extern const rk3576_ddr_phy_freq_row rk3576_ddr_lpddr4_phy_freq_rows[RK3576_LPDDR4_PHY_FREQ_ROW_COUNT];
+extern const rk3576_ddr_phy_freq_row rk3576_ddr_lpddr5_phy_freq_rows[RK3576_LPDDR5_PHY_FREQ_ROW_COUNT];
+extern const rk3576_ddr_lp5_wck_entry rk3576_ddr_lpddr5_wck_low_table[RK3576_LPDDR5_WCK_LOW_ENTRIES];
+extern const rk3576_ddr_lp5_wck_entry rk3576_ddr_lpddr5_wck_high_table[RK3576_LPDDR5_WCK_HIGH_ENTRIES];
+extern const rk3576_ddr_reg_patch rk3576_ddr_pctl_init_patch_table[RK3576_PCTL_INIT_PATCH_ENTRY_COUNT];
+extern const rk3576_ddr_dvfs_fsp_reg_offsets rk3576_ddr_dvfs_fsp_reg_offset_table[RK3576_DVFS_FSP_REG_ENTRY_COUNT];
+extern const rk3576_ddr_timing_seed rk3576_ddr_lpddr4_default_timing_seed;
+extern const rk3576_ddr_timing_seed rk3576_ddr_lpddr5_default_timing_seed;
+extern const rk3576_ddr_lpddr5_mode_profile rk3576_ddr_lpddr5_mode_profiles[RK3576_DDR_LPDDR5_MODE_PROFILE_COUNT];
+extern const rk3576_ddr_lpddr5_timing_profile rk3576_ddr_lpddr5_low_timing_profiles[RK3576_DDR_LPDDR5_LOW_TIMING_PROFILE_COUNT];
+extern const rk3576_ddr_lpddr5_timing_profile rk3576_ddr_lpddr5_high_timing_profiles[RK3576_DDR_LPDDR5_HIGH_TIMING_PROFILE_COUNT];
+extern const rk3576_ddr_lpddr5_timing_profile rk3576_ddr_lpddr5_high_dbi_timing_profiles[RK3576_DDR_LPDDR5_HIGH_DBI_TIMING_PROFILE_COUNT];
+extern const uint16_t rk3576_ddr_lpddr5_low_timing_profile_thresholds[RK3576_DDR_LPDDR5_LOW_TIMING_PROFILE_COUNT];
+extern const uint16_t rk3576_ddr_lpddr5_high_timing_profile_thresholds[RK3576_DDR_LPDDR5_HIGH_TIMING_PROFILE_COUNT];
+
+const rk3576_ddr_phy_freq_row *rk3576_ddr_select_phy_freq_row(uint32_t dram_type, uint32_t target_mhz);
+int rk3576_ddr_select_lpddr5_wck(uint32_t target_mhz, const rk3576_ddr_lp5_wck_entry **entry_out, int *low_table_out);
+uint32_t rk3576_ddr_pack_lpddr5_wck(const rk3576_ddr_lp5_wck_entry *entry);
+size_t rk3576_ddr_copy_valid_pctl_init_patches(rk3576_ddr_reg_patch *entries, size_t capacity);

@@ -1,0 +1,5 @@
+tests/rk3576_ddr_trainer_test
+*.o
+*.a
+*.dSYM/
+.DS_Store
