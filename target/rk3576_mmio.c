@@ -95,3 +95,13 @@ void rk3576_ddr_platform_handoff(uintptr_t entry, const void *arg)
     for (;;)
         __asm__ volatile("wfe");
 }
+
+void rk3576_ddr_platform_jump(uintptr_t entry)
+{
+    void (*next_stage)(void) = (void (*)(void))entry;
+
+    if (next_stage)
+        next_stage();
+    for (;;)
+        __asm__ volatile("wfe");
+}

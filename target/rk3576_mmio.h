@@ -14,3 +14,4 @@ void rk3576_ddr_raw_uart_putc(uintptr_t uart_base, uint8_t ch);
 void rk3576_ddr_raw_uart_puts(uintptr_t uart_base, const char *s);
 void rk3576_ddr_apply_register_steps(const rk3576_ddr_register_step *steps, size_t count);
 void rk3576_ddr_platform_handoff(uintptr_t entry, const void *arg);
+void rk3576_ddr_platform_jump(uintptr_t entry);

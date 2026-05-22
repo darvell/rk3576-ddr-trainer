@@ -65,7 +65,7 @@ make bin \
   LLVM_OBJCOPY=/opt/homebrew/opt/llvm/bin/llvm-objcopy
 ```
 
-Board defaults live in `target/rk3576_board.c`. Adjust that file for the DRAM population, channel map, MR8 values, address-map policy, debug UART clock, and next-stage handoff address used by your board.
+Board defaults live in `target/rk3576_board.c`. The included target policy enables both RK3576 memory channels, uses LPDDR5 defaults, writes DDR config tags to `0x401fe000`, writes the export image to `0x40104000`, and supports the boot jump path at `0x40060000`. Adjust the same file if your board uses a different DRAM population, channel map, MR8 values, address-map policy, debug UART clock, or next-stage handoff address.
 
 ## Test
 
