@@ -25,7 +25,9 @@ Makefile             Simple build and test entry points
 
 ## Requirements
 
-You need a C11 compiler and `make`. On macOS or Linux, the system `cc` is enough.
+You need a C11 compiler and `make` for the host tests. On macOS or Linux, the system `cc` is enough.
+
+To build a raw RK3576 image, install LLVM with AArch64 bare-metal support. The default binary build uses `clang`, `lld`, and `llvm-objcopy`, and you can override those tools through `CROSS_CC` and `LLVM_OBJCOPY`.
 
 ## Build
 
@@ -38,6 +40,32 @@ This builds the host test binary at:
 ```text
 tests/rk3576_ddr_trainer_test
 ```
+
+## Build a raw RK3576 image
+
+```sh
+make bin
+```
+
+This produces:
+
+```text
+build/rk3576_ddr_trainer.elf
+build/rk3576_ddr_trainer.bin
+build/rk3576_ddr_trainer.map
+```
+
+The image entry point is `_start` at `0x3ff81000`. Startup code sets the stack, clears BSS, preserves the incoming boot-parameter pointer in `x0`, and calls `rk3576_ddr_entry()`.
+
+If LLVM is not first in your shell path, pass the tools explicitly:
+
+```sh
+make bin \
+  CROSS_CC=/opt/homebrew/opt/llvm/bin/clang \
+  LLVM_OBJCOPY=/opt/homebrew/opt/llvm/bin/llvm-objcopy
+```
+
+Board defaults live in `target/rk3576_board.c`. Adjust that file for the DRAM population, channel map, MR8 values, address-map policy, debug UART clock, and next-stage handoff address used by your board.
 
 ## Test
 
@@ -56,6 +84,8 @@ make clean
 ## Using the module
 
 Include the headers from `include/rk3576_ddr` and compile the `src/*.c` files into your boot-stage project. Pure builder APIs can be used directly. Code that needs hardware access should connect generated register steps to the board's MMIO write, read, poll, delay, and UART routines.
+
+For the included raw image target, the platform glue is under `target/`: `startup.S` provides the boot entry, `rk3576_ddr.ld` controls SRAM placement, `rk3576_mmio.c` applies register operations, and `rk3576_entry.c` wires the board configuration into the library.
 
 A typical integration flow is:
 

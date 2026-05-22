@@ -1,4 +1,5 @@
 tests/rk3576_ddr_trainer_test
+build/
 *.o
 *.a
 *.dSYM/
